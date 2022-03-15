@@ -1,6 +1,6 @@
 class HandleProductsSimilares {
-  async save() {
-    console.log("salvando produtos similares...")
+  async save(filename, data) {
+    console.log(filename)
   }
 }
 

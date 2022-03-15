@@ -1,6 +1,6 @@
 class HandleProductsImages {
-  async save() {
-    console.log("salvando produtos imagens...")
+  async save(filename, data) {
+    console.log(filename)
   }
 }
 

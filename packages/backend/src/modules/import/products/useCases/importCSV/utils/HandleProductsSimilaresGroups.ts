@@ -1,6 +1,6 @@
 class HandleProductsSimilaresGroups {
-  async save() {
-    console.log("salvando produtos similares grupos...")
+  async save(filename, data) {
+    console.log(filename)
   }
 }
 

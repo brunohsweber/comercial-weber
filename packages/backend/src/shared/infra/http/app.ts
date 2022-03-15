@@ -40,7 +40,7 @@ app.use(
 );
 
 const autoImport = new CronJob(
-  "* * * * * *",
+  "0/4 * * * * *",
   async () => {
     const importCSVController = new ImportCSVController();
     const importImagesController = new ImportImagesController();

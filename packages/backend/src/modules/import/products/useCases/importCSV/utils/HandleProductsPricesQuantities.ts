@@ -1,6 +1,6 @@
 class HandleProductsPricesQuantities {
-  async save() {
-    console.log("salvando produtos preço x quantidade...")
+  async save(filename, data) {
+    console.log(filename)
   }
 }
 

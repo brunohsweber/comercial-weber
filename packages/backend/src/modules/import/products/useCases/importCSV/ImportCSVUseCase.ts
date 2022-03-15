@@ -45,8 +45,8 @@ class ImportCSVUseCase {
     const handleProductsSpecifications = container.resolve(HandleProductsSpecifications);
     const handleProductsSuggestions = container.resolve(HandleProductsSuggestions)
 
-    const handleDefault = async file =>
-      console.log(`${file.filename} não foi mapeado e será ignorado`);
+    const handleDefault = async (filename) =>
+      console.log(`"${filename}" não foi mapeado e será ignorado`);
 
     const filesUseCases = {
       Products: handleProducts.save,
@@ -60,16 +60,14 @@ class ImportCSVUseCase {
     };
 
     const saveCSVFilesPromise = csvFilesRead.map(async (file: IFile) => {
-      
-      const file_name = `${path
+
+      const filename = `${path
         .basename(file.filename)
         .replace(/\.[^/.]+$/, "")}`;
 
-      // Poderia ser também: const file_name = file.filename.replace("csv", "")
+      this.saveJsonFile.execute(filename, file.rows);
 
-      this.saveJsonFile.execute(file_name, file.rows);
-
-      (filesUseCases[file_name] || filesUseCases.default)(file); // Aqui vai mapear e salvar os arquivos no banco de dados
+      await (filesUseCases[filename] || filesUseCases.default)(filename, file.rows); // Aqui vai mapear e salvar os arquivos no banco de dados
     });
 
     await Promise.all(saveCSVFilesPromise);

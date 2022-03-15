@@ -1,6 +1,6 @@
 class HandleProductsSuggestions {
-  async save() {
-    console.log("salvando produtos sugestões...")
+  async save(filename, data) {
+    console.log(filename)
   }
 }
 
