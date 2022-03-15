@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Products {
+  id                    Int     @id @unique
+  description           String  @db.VarChar(80)
+  information           String
+  brand                 String  @db.VarChar(15)
+  code_1                String  @db.VarChar(60)
+  code_2                String  @db.VarChar(60)
+  category              String  @db.VarChar(30)
+  id_integration        Int
+  code_integration      String  @db.VarChar(25)
+  ncm                   String  @db.VarChar(8)
+  cest                  String  @db.VarChar(8)
+  sale_unit             String  @db.VarChar(6)
+  sale_unit_description String  @db.VarChar(25)
+  multiple_of_sale      Float
+  physical_stock        Float
+  reservations_stock    Float
+  available_stock       Float
+  localization          String  @db.VarChar(25)
+  is_promotion          Boolean @default(value: false)
+  promotion_price       Decimal @db.Decimal(10, 2)
+  has_image             Boolean @default(value: false)
+
+  @@map("products")
+}
+
+model ProductsImages {
+  id         Int    @id @unique
+  id_product Int
+  file_name  String @db.VarChar(100)
+  file_path  String @db.VarChar(500)
+  sequence   Int
+
+  @@map("products_images")
+}
+
+model ProductsPricesQuantities {
+  id                  Int     @id @unique
+  id_product          Int
+  quantity_initial    Float
+  quantity_final      Float
+  sale_price          Decimal @db.Decimal(10, 2)
+  percentage_discount Float
+
+  @@map("products_prices_quantities")
+}
+
+model ProductsCategories {
+  id                   Int    @id @unique
+  level                String @db.Char(1)
+  category             String @unique @db.VarChar(30)
+  category_description String @db.VarChar(50)
+
+  @@map("products_categories")
+}
+
+model ProductsSimilares {
+  id               Int @id @unique
+  id_similar_group Int
+  id_product       Int
+
+  @@map("products_similares")
+}
+
+model ProductsSimilaresGroups {
+  id                        Int    @id @unique
+  similar_group_description String @db.VarChar(40)
+
+  @@map("products_similares_groups")
+}
+
+model ProductsSpecifications {
+  id                        Int    @id @unique
+  id_product                Int
+  specification_description String @db.VarChar(25)
+  specification_value       String @db.VarChar(100)
+
+  @@map("products_specifications")
+}
+
+model ProductsSuggestions {
+  id                   Int    @id @unique
+  id_product           Int
+  id_product_suggested Int
+  comment              String @db.VarChar(50)
+
+  @@map("products_suggestions")
+}

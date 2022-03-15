@@ -1,0 +1,75 @@
+version: "3.9"
+
+services:
+  web:
+    image: nginx
+    container_name: web
+    volumes:
+      - ./nginx/app.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+    depends_on:
+      - app
+    networks:
+      - comercialweber
+
+  database:
+    image: postgres
+    container_name: database
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=comercial-weber
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres:/data/postgres
+    networks:
+      - comercialweber
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.0
+    container_name: elasticsearch
+    environment:
+      discovery.type: single-node
+    volumes:
+      - elasticsearch:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - comercialweber
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.12.0
+    container_name: kibana
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+    networks:
+      - comercialweber
+
+  app:
+    build: .
+    container_name: comercialweber
+    volumes:
+      - .:/usr/app
+    depends_on:
+      - database
+      - elasticsearch
+      - kibana
+    networks:
+      - comercialweber
+
+volumes:
+  postgres:
+    driver: local
+  elasticsearch:
+    driver: local
+
+networks:
+  comercialweber:
+    driver: bridge
