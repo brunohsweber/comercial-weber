@@ -6,7 +6,7 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 3333
+EXPOSE 3000
 
 CMD bash -c "cd scripts && sh start.sh"
 
